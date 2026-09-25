@@ -1,7 +1,7 @@
 """
 Locating lessons, whether installed as a wheel or run from a source checkout.
 
-Installed, the notebooks sit in ``dlfs/_data/``. In a git checkout they are
+Installed, the notebooks sit in ``dlscratch/_data/``. In a git checkout they are
 at the repo root. Both are supported so contributors do not have to reinstall
 after every edit.
 """
@@ -23,7 +23,7 @@ def data_dir() -> Path:
     if (packaged / "curriculum.json").exists():
         return packaged
 
-    # Source checkout: src/dlfs/curriculum.py -> repo root
+    # Source checkout: src/dlscratch/curriculum.py -> repo root
     repo = _HERE.parents[1]
     if (repo / "curriculum.json").exists():
         return repo

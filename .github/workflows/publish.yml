@@ -55,9 +55,9 @@ jobs:
           python -m venv /tmp/smoke
           /tmp/smoke/bin/pip install --quiet "$(ls dist/*.whl)" pytest
           /tmp/smoke/bin/pytest tests/ -q
-          /tmp/smoke/bin/dlfs --version
-          /tmp/smoke/bin/dlfs list --available
-          /tmp/smoke/bin/dlfs open 1 --no-launch --dir /tmp/smoke-lesson
+          /tmp/smoke/bin/dlscratch --version
+          /tmp/smoke/bin/dlscratch list --available
+          /tmp/smoke/bin/dlscratch open 1 --no-launch --dir /tmp/smoke-lesson
           test -f /tmp/smoke-lesson/01-tensors-and-vectors.ipynb
 
       - uses: actions/upload-artifact@v4

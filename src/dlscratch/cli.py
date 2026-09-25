@@ -1,12 +1,12 @@
 """
-The ``dlfs`` command line.
+The ``dlscratch`` command line.
 
-    dlfs list                 the curriculum and what is finished
-    dlfs info 7               one lesson in detail
-    dlfs open 7               copy lesson 7 here and launch Jupyter
-    dlfs site                 serve the interactive site locally
-    dlfs verify 7             run a lesson headless and report failures
-    dlfs where                where the installed notebooks live
+    dlscratch list                 the curriculum and what is finished
+    dlscratch info 7               one lesson in detail
+    dlscratch open 7               copy lesson 7 here and launch Jupyter
+    dlscratch site                 serve the interactive site locally
+    dlscratch verify 7             run a lesson headless and report failures
+    dlscratch where                where the installed notebooks live
 """
 from __future__ import annotations
 
@@ -20,8 +20,8 @@ import sys
 import webbrowser
 from pathlib import Path
 
-from dlfs import __version__
-from dlfs.curriculum import (
+from dlscratch import __version__
+from dlscratch.curriculum import (
     data_dir,
     lesson,
     lessons,
@@ -77,7 +77,7 @@ def cmd_list(args) -> int:
     ready = sum(1 for l in lessons() if l.available)
     print(f"\n  {done}/{total} written  ({done * 100 // total}%)   "
           f"{_c('*', '32')} = {ready} runnable now")
-    print(f"  {_c('dlfs open <number>', '1')} to start one\n")
+    print(f"  {_c('dlscratch open <number>', '1')} to start one\n")
     return 0
 
 
@@ -94,7 +94,7 @@ def cmd_info(args) -> int:
     print(f"  notebook   {nb if nb else _c('not written yet', '90')}")
     print(f"  solutions  {sol if sol else _c('not written yet', '90')}")
     if nb:
-        print(f"\n  {_c(f'dlfs open {l.id}', '1')} to work through it")
+        print(f"\n  {_c(f'dlscratch open {l.id}', '1')} to work through it")
     print()
     return 0
 
@@ -105,7 +105,7 @@ def cmd_open(args) -> int:
     nb = notebook_path(l.id)
     if nb is None:
         print(f"  Lesson {l.number} ({l.title}) has not been written yet.")
-        print("  Run 'dlfs list --available' to see what is ready.")
+        print("  Run 'dlscratch list --available' to see what is ready.")
         return 1
 
     dest_dir = Path(args.dir).expanduser().resolve()
@@ -256,11 +256,11 @@ def cmd_where(args) -> int:
 # ------------------------------------------------------------------ main
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
-        prog="dlfs",
+        prog="dlscratch",
         description="Learn deep learning from first principles -- 45 notebooks "
                     "that derive the maths, work the numbers by hand, then "
                     "implement it in pure Python, NumPy and TensorFlow.",
-        epilog="Start with:  dlfs list     then:  dlfs open 1",
+        epilog="Start with:  dlscratch list     then:  dlscratch open 1",
     )
     p.add_argument("-V", "--version", action="version",
                    version=f"dl-from-scratch {__version__}")
@@ -281,8 +281,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     po = sub.add_parser("open", help="copy a lesson here and launch Jupyter")
     po.add_argument("lesson", help="number or slug")
-    po.add_argument("-d", "--dir", default="dlfs-lessons",
-                    help="where to copy it (default: ./dlfs-lessons)")
+    po.add_argument("-d", "--dir", default="dlscratch-lessons",
+                    help="where to copy it (default: ./dlscratch-lessons)")
     po.add_argument("--solutions", action="store_true", help="copy the solutions too")
     po.add_argument("--no-launch", action="store_true", help="copy only")
     po.add_argument("-f", "--force", action="store_true", help="overwrite an existing copy")

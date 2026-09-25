@@ -12,25 +12,25 @@ import json
 
 import pytest
 
-import dlfs
-from dlfs import curriculum, gradcheck
-from dlfs.cli import build_parser
+import dlscratch
+from dlscratch import curriculum, gradcheck
+from dlscratch.cli import build_parser
 
 
 # --------------------------------------------------------------- packaging
 def test_version_is_sane():
-    assert dlfs.__version__.count(".") == 2
-    assert all(part.isdigit() for part in dlfs.__version__.split("."))
+    assert dlscratch.__version__.count(".") == 2
+    assert all(part.isdigit() for part in dlscratch.__version__.split("."))
 
 
 def test_data_ships_and_is_findable():
-    root = dlfs.data_dir()
+    root = dlscratch.data_dir()
     assert (root / "curriculum.json").is_file()
     assert (root / "notebooks").is_dir()
 
 
 def test_curriculum_is_complete():
-    lessons = dlfs.lessons()
+    lessons = dlscratch.lessons()
     assert len(lessons) == 45
     assert [l.id for l in lessons] == list(range(1, 46))
     assert len({l.slug for l in lessons}) == 45, "slugs must be unique"
@@ -42,35 +42,35 @@ def test_curriculum_is_complete():
 
 def test_every_written_notebook_has_a_curriculum_entry():
     """A notebook on disk with no matching lesson id would be invisible."""
-    ids = {l.id for l in dlfs.lessons()}
-    for path in (dlfs.data_dir() / "notebooks").glob("*.ipynb"):
+    ids = {l.id for l in dlscratch.lessons()}
+    for path in (dlscratch.data_dir() / "notebooks").glob("*.ipynb"):
         assert int(path.name[:2]) in ids, f"{path.name} has no curriculum entry"
 
 
 def test_done_lessons_are_actually_present():
-    for l in dlfs.lessons():
+    for l in dlscratch.lessons():
         if l.status == "done":
             assert l.available, f"lesson {l.number} is marked done but has no notebook"
-            assert dlfs.notebook_path(l.id).is_file()
+            assert dlscratch.notebook_path(l.id).is_file()
 
 
 def test_notebooks_are_valid_json_with_cells():
-    for path in (dlfs.data_dir() / "notebooks").glob("*.ipynb"):
+    for path in (dlscratch.data_dir() / "notebooks").glob("*.ipynb"):
         nb = json.loads(path.read_text(encoding="utf-8"))
         assert nb["nbformat"] >= 4
         assert nb["cells"], f"{path.name} has no cells"
 
 
-def test_notebooks_do_not_import_dlfs():
+def test_notebooks_do_not_import_the_package():
     """Lessons must stay self-contained so they run unchanged on Kaggle."""
-    for path in (dlfs.data_dir() / "notebooks").glob("*.ipynb"):
+    for path in (dlscratch.data_dir() / "notebooks").glob("*.ipynb"):
         nb = json.loads(path.read_text(encoding="utf-8"))
         for cell in nb["cells"]:
             if cell["cell_type"] != "code":
                 continue
             src = "".join(cell["source"])
-            assert "import dlfs" not in src, f"{path.name} imports dlfs"
-            assert "from dlfs" not in src, f"{path.name} imports from dlfs"
+            assert "import dlscratch" not in src, f"{path.name} imports dlscratch"
+            assert "from dlscratch" not in src, f"{path.name} imports from dlscratch"
 
 
 # ----------------------------------------------------------------- lookup
@@ -155,13 +155,13 @@ def test_numeric_hessian_matches_lesson_07():
     ["info", "7"], ["where"],
 ])
 def test_cli_commands_succeed(argv, capsys):
-    from dlfs.cli import main
+    from dlscratch.cli import main
     assert main(argv) == 0
     assert capsys.readouterr().out.strip()
 
 
 def test_cli_reports_missing_lesson_without_crashing(capsys):
-    from dlfs.cli import main
+    from dlscratch.cli import main
     assert main(["info", "999"]) == 1
     assert "No lesson" in capsys.readouterr().out
 
@@ -174,7 +174,7 @@ def test_parser_exposes_every_command():
 
 
 # --------------------------------------------------------------- doctests
-@pytest.mark.parametrize("module", [dlfs, gradcheck, curriculum])
+@pytest.mark.parametrize("module", [dlscratch, gradcheck, curriculum])
 def test_doctests(module):
     result = doctest.testmod(module, verbose=False)
     assert result.failed == 0, f"{module.__name__}: {result.failed} doctest failures"

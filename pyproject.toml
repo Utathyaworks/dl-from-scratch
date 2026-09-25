@@ -62,27 +62,27 @@ Repository = "https://github.com/Utathyaworks/dl-from-scratch"
 Issues = "https://github.com/Utathyaworks/dl-from-scratch/issues"
 
 [project.scripts]
-dlfs = "dlfs.cli:main"
+dlscratch = "dlscratch.cli:main"
 
 [tool.hatch.version]
-path = "src/dlfs/__init__.py"
+path = "src/dlscratch/__init__.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/dlfs"]
+packages = ["src/dlscratch"]
 
 # The notebooks live at the repo root (Kaggle and GitHub link straight to
 # them) and are copied into the wheel at build time rather than duplicated
 # in the source tree.
 [tool.hatch.build.targets.wheel.force-include]
-"notebooks" = "dlfs/_data/notebooks"
-"solutions" = "dlfs/_data/solutions"
-"docs" = "dlfs/_data/docs"
-"curriculum.json" = "dlfs/_data/curriculum.json"
-"progress.json" = "dlfs/_data/progress.json"
+"notebooks" = "dlscratch/_data/notebooks"
+"solutions" = "dlscratch/_data/solutions"
+"docs" = "dlscratch/_data/docs"
+"curriculum.json" = "dlscratch/_data/curriculum.json"
+"progress.json" = "dlscratch/_data/progress.json"
 
 [tool.hatch.build.targets.sdist]
 include = [
-    "src/dlfs",
+    "src/dlscratch",
     "notebooks",
     "solutions",
     "lessons",

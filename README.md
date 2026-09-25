@@ -23,14 +23,14 @@ pip install "dl-from-scratch[notebooks] @ git+https://github.com/Utathyaworks/dl
 Then:
 
 ```bash
-dlfs list                 # the curriculum, and what is finished
-dlfs open 1               # copy lesson 1 into ./dlfs-lessons and launch Jupyter
-dlfs site                 # serve the interactive site at localhost:8000
-dlfs info backprop        # look a lesson up by name
-dlfs verify 7             # execute a lesson headless and report any failure
+dlscratch list                 # the curriculum, and what is finished
+dlscratch open 1               # copy lesson 1 into ./dlscratch-lessons and launch Jupyter
+dlscratch site                 # serve the interactive site at localhost:8000
+dlscratch info backprop        # look a lesson up by name
+dlscratch verify 7             # execute a lesson headless and report any failure
 ```
 
-`dlfs open` copies the notebook out of the package into your working directory,
+`dlscratch open` copies the notebook out of the package into your working directory,
 so you can scribble in it freely — your copy is yours, and the pristine one
 stays in the package.
 
@@ -39,9 +39,9 @@ stays in the package.
 | Install | Gives you |
 |---|---|
 | `pip install dl-from-scratch` | the CLI, the notebooks, and the library. NumPy + matplotlib only |
-| `...[notebooks]` | JupyterLab, so `dlfs open` can launch straight into a lesson |
+| `...[notebooks]` | JupyterLab, so `dlscratch open` can launch straight into a lesson |
 | `...[tf]` | TensorFlow, enabling section 7 of every lesson |
-| `...[dev]` | `nbclient` etc. for `dlfs verify` and for contributing |
+| `...[dev]` | `nbclient` etc. for `dlscratch verify` and for contributing |
 | `...[all]` | everything |
 
 TensorFlow is **optional by design** — section 7 of every notebook detects its
@@ -53,7 +53,7 @@ The notebooks are deliberately self-contained (the same file runs unchanged on
 Kaggle), but the gradient checker is worth having outside one:
 
 ```python
-from dlfs import grad_check, numeric_gradient
+from dlscratch import grad_check, numeric_gradient
 
 loss = lambda p: sum((p[0] * x + p[1] - y) ** 2 for x, y in zip(X, Y)) / len(X)
 check = grad_check(my_hand_derived_gradient(p), numeric_gradient(loss, p))

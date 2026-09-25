@@ -66,10 +66,10 @@ jobs:
       - name: The CLI works end to end
         shell: bash
         run: |
-          dlfs --version
-          dlfs list --available
-          dlfs info 7
-          dlfs where
-          dlfs open 1 --no-launch --dir "$RUNNER_TEMP/lesson-check"
+          dlscratch --version
+          dlscratch list --available
+          dlscratch info 7
+          dlscratch where
+          dlscratch open 1 --no-launch --dir "$RUNNER_TEMP/lesson-check"
           test -f "$RUNNER_TEMP/lesson-check/01-tensors-and-vectors.ipynb"
           echo "notebook extracted from the installed package OK"
