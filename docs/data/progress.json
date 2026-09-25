@@ -135,8 +135,8 @@
       "slug": "mlp-forward-pass",
       "title": "The MLP Forward Pass",
       "goal": "Stack layers to break the XOR wall; trace one input to one output.",
-      "status": "todo",
-      "completed": null,
+      "status": "done",
+      "completed": "2026-09-26",
       "notebook": "notebooks/10-mlp-forward-pass.ipynb"
     },
     {
@@ -145,8 +145,8 @@
       "slug": "backpropagation",
       "title": "Backpropagation, Derived in Full",
       "goal": "Derive every partial derivative of a two-layer net and verify numerically.",
-      "status": "todo",
-      "completed": null,
+      "status": "done",
+      "completed": "2026-09-26",
       "notebook": "notebooks/11-backpropagation.ipynb"
     },
     {

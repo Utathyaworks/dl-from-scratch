@@ -1,6 +1,6 @@
 # Progress
 
-**5 / 45 lessons complete (11%)**
+**7 / 45 lessons complete (15%)**
 
 `[ ]` todo &nbsp;&nbsp; `[~]` in progress &nbsp;&nbsp; `[x]` done
 
@@ -17,7 +17,7 @@ Lessons are done in whatever order makes sense on the day; the
 | `[ ]` | 04 | Gradient Descent in 1D | Roll downhill on a curve and watch the learning rate make or break it. |  |
 | `[ ]` | 05 | Probability, Likelihood and Entropy | Derive why cross-entropy is the loss, not an arbitrary choice. |  |
 
-## Phase 1 - The First Networks (4/10)
+## Phase 1 - The First Networks (6/10)
 
 | | # | Lesson | Goal | Done |
 |---|---|---|---|---|
@@ -25,8 +25,8 @@ Lessons are done in whatever order makes sense on the day; the
 | `[x]` | 07 | [Loss Surfaces and MSE](notebooks/07-loss-surfaces.ipynb) | See the bowl you are descending and what makes it steep or flat. | 2026-09-25 |
 | `[x]` | 08 | [Logistic Regression and the Sigmoid](notebooks/08-logistic-regression.ipynb) | Turn a line into a probability and derive the sigmoid gradient. | 2026-09-26 |
 | `[x]` | 09 | [The Perceptron and its Limits](notebooks/09-the-perceptron.ipynb) | Build the 1958 neuron and hit the XOR wall that froze the field. | 2026-09-26 |
-| `[ ]` | 10 | The MLP Forward Pass | Stack layers to break the XOR wall; trace one input to one output. |  |
-| `[ ]` | 11 | Backpropagation, Derived in Full | Derive every partial derivative of a two-layer net and verify numerically. |  |
+| `[x]` | 10 | [The MLP Forward Pass](notebooks/10-mlp-forward-pass.ipynb) | Stack layers to break the XOR wall; trace one input to one output. | 2026-09-26 |
+| `[x]` | 11 | [Backpropagation, Derived in Full](notebooks/11-backpropagation.ipynb) | Derive every partial derivative of a two-layer net and verify numerically. | 2026-09-26 |
 | `[ ]` | 12 | Activations: Sigmoid, Tanh, ReLU, GELU | Compare gradients, saturation and dead units across activations. |  |
 | `[ ]` | 13 | Softmax and Cross-Entropy | Multi-class outputs and the famous (p - y) gradient simplification. |  |
 | `[ ]` | 14 | Weight Initialization: Xavier and He | Derive the variance rules that stop signals exploding or dying. |  |
@@ -89,7 +89,7 @@ Lessons are done in whatever order makes sense on the day; the
 
 ## Order completed
 
-01 -> 06 -> 07 -> 08 -> 09
+01 -> 06 -> 07 -> 08 -> 09 -> 10 -> 11
 
 ---
 
