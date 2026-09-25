@@ -1,0 +1,95 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dl-from-scratch"
+dynamic = ["version"]
+description = "Learn deep learning from first principles: 45 notebooks that derive the maths, work the numbers by hand, then implement it in pure Python, NumPy and TensorFlow -- and assert all three agree."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Utathyaworks" }]
+keywords = [
+    "deep-learning", "machine-learning", "neural-networks", "education",
+    "tutorial", "backpropagation", "numpy", "tensorflow", "from-scratch",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Education",
+]
+
+# Deliberately tiny. The notebooks are self-contained and only ever need
+# NumPy and matplotlib; TensorFlow is optional and every lesson skips its
+# TF section cleanly when it is absent.
+dependencies = [
+    "numpy>=1.21",
+    "matplotlib>=3.5",
+]
+
+[project.optional-dependencies]
+# Everything needed to actually open and run the notebooks locally.
+notebooks = [
+    "jupyterlab>=4.0",
+    "ipykernel>=6.25",
+    "ipywidgets>=8.0",
+]
+# Adds the TensorFlow sections (section 7 of every lesson).
+tf = ["tensorflow>=2.12"]
+# For rebuilding and verifying lessons -- contributors only.
+dev = [
+    "nbformat>=5.9",
+    "nbclient>=0.9",
+    "ipykernel>=6.25",
+    "pytest>=7.4",
+]
+all = [
+    "dl-from-scratch[notebooks,tf,dev]",
+]
+
+[project.urls]
+Homepage = "https://utathyaworks.github.io/dl-from-scratch"
+Repository = "https://github.com/Utathyaworks/dl-from-scratch"
+Issues = "https://github.com/Utathyaworks/dl-from-scratch/issues"
+
+[project.scripts]
+dlfs = "dlfs.cli:main"
+
+[tool.hatch.version]
+path = "src/dlfs/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/dlfs"]
+
+# The notebooks live at the repo root (Kaggle and GitHub link straight to
+# them) and are copied into the wheel at build time rather than duplicated
+# in the source tree.
+[tool.hatch.build.targets.wheel.force-include]
+"notebooks" = "dlfs/_data/notebooks"
+"solutions" = "dlfs/_data/solutions"
+"docs" = "dlfs/_data/docs"
+"curriculum.json" = "dlfs/_data/curriculum.json"
+"progress.json" = "dlfs/_data/progress.json"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/dlfs",
+    "notebooks",
+    "solutions",
+    "lessons",
+    "docs",
+    "tools",
+    "curriculum.json",
+    "progress.json",
+    "README.md",
+    "PROGRESS.md",
+]

@@ -29,6 +29,7 @@
     <div class="bar"><i class="done" id="bar-done" style="width:0"></i><i class="prog" id="bar-prog" style="width:0"></i></div>
 
     <div class="links">
+      <a class="btn primary" href="#install">Install locally</a>
       <a class="btn" id="repo-link" href="#">Repository</a>
       <a class="btn" href="playground.html">Interactive demos</a>
       <a class="btn" href="#how">How a lesson is built</a>
@@ -47,6 +48,27 @@
 
   <div id="phases"></div>
   <div class="empty" id="empty" hidden>Nothing matches that.</div>
+
+  <section id="install" style="margin-top:52px">
+    <h2 style="font-size:19px">Run it on your own machine</h2>
+    <p style="color:var(--text-dim);max-width:65ch">
+      Every notebook also runs on Kaggle with one click, but if you would rather
+      work locally the whole course installs as a package.
+    </p>
+    <pre class="out" style="max-width:74ch"><b>pip install</b> "dl-from-scratch[notebooks] @ git+https://github.com/Utathyaworks/dl-from-scratch"
+
+<b>dlfs list</b>            the curriculum, and what is finished
+<b>dlfs open 1</b>          copy lesson 1 here and launch Jupyter
+<b>dlfs site</b>            serve this site at localhost:8000
+<b>dlfs info backprop</b>   look a lesson up by name
+<b>dlfs verify 7</b>        execute a lesson headless and report failures</pre>
+    <p style="color:var(--text-dim);max-width:65ch">
+      <code>dlfs open</code> copies the notebook into your working directory, so you
+      can scribble in it freely while the pristine copy stays in the package.
+      TensorFlow is optional &mdash; section 7 of every lesson detects its absence
+      and skips itself rather than breaking.
+    </p>
+  </section>
 
   <section id="how" style="margin-top:52px">
     <h2 style="font-size:19px">How every lesson is built</h2>
