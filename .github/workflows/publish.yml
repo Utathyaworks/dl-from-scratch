@@ -1,0 +1,102 @@
+name: publish to PyPI
+
+# Uses PyPI Trusted Publishing (OpenID Connect). There is deliberately NO
+# API token stored anywhere: GitHub proves this workflow's identity to PyPI
+# directly, and PyPI issues a short-lived credential for that one upload.
+# Nothing to leak, nothing to rotate.
+#
+# One-time setup on PyPI, at https://pypi.org/manage/account/publishing/ :
+#   PyPI Project Name : dl-from-scratch
+#   Owner             : Utathyaworks
+#   Repository name   : dl-from-scratch
+#   Workflow name     : publish.yml
+#   Environment name  : pypi
+#
+# Then publish by creating a GitHub Release (tag like v0.3.0).
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Where to upload"
+        required: true
+        default: testpypi
+        type: choice
+        options: [testpypi, pypi]
+
+jobs:
+  build:
+    name: build the distributions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build wheel and sdist
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+
+      - name: Check the metadata renders on PyPI
+        run: |
+          pip install twine
+          twine check --strict dist/*
+
+      # Install from the built wheel in a clean environment and make sure the
+      # thing actually works before it becomes permanent -- a PyPI version
+      # number can never be reused.
+      - name: Smoke-test the built wheel
+        run: |
+          python -m venv /tmp/smoke
+          /tmp/smoke/bin/pip install --quiet "$(ls dist/*.whl)" pytest
+          /tmp/smoke/bin/pytest tests/ -q
+          /tmp/smoke/bin/dlfs --version
+          /tmp/smoke/bin/dlfs list --available
+          /tmp/smoke/bin/dlfs open 1 --no-launch --dir /tmp/smoke-lesson
+          test -f /tmp/smoke-lesson/01-tensors-and-vectors.ipynb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+
+  testpypi:
+    name: upload to TestPyPI
+    needs: build
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+    runs-on: ubuntu-latest
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/dl-from-scratch
+    permissions:
+      id-token: write          # the only credential this job needs
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  pypi:
+    name: upload to PyPI
+    needs: build
+    if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.target == 'pypi')
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/dl-from-scratch
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: distributions
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
