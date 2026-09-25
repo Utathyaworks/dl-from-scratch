@@ -10,7 +10,7 @@ Runs on **Kaggle**, Colab, or locally. Nothing to download inside a lesson.
 
 - **Notebooks:** [`notebooks/`](notebooks/) · **Solutions:** [`solutions/`](solutions/)
 - **Progress:** [PROGRESS.md](PROGRESS.md)
-- **Site & interactive demos:** *(deploys to GitHub Pages once pushed)*
+- **Site & interactive demos:** **https://utathyaworks.github.io/dl-from-scratch**
 
 ---
 
@@ -90,6 +90,9 @@ python -m http.server -d docs 8000    # then open http://localhost:8000
 
 Static, no build step. `tools/track.py` regenerates `docs/data/progress.json`
 on every status change, so the site cannot drift from the repo.
+
+It is published straight from `main` + `/docs` (Settings > Pages > Deploy from
+a branch), so a push updates the live site with no workflow involved.
 
 ---
 

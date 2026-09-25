@@ -105,8 +105,8 @@
       "slug": "loss-surfaces",
       "title": "Loss Surfaces and MSE",
       "goal": "See the bowl you are descending and what makes it steep or flat.",
-      "status": "todo",
-      "completed": null,
+      "status": "done",
+      "completed": "2026-09-25",
       "notebook": "notebooks/07-loss-surfaces.ipynb"
     },
     {
