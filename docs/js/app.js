@@ -59,7 +59,7 @@ function card(d, lesson) {
 }
 
 /* Lessons that have an interactive demo on playground.html. */
-const DEMO_LESSONS = new Set([1]);
+const DEMO_LESSONS = new Set([1, 6]);
 
 function render() {
   const d = state.data;

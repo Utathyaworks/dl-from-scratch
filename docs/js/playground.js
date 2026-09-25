@@ -179,6 +179,212 @@ DEMOS.push({
   },
 });
 
+/* ============================================================ LESSON 06 ===
+   Gradient descent on the real loss surface of the lesson's three points.
+   Everything is computed live -- no precomputed frames. */
+
+DEMOS.push({
+  id: 6,
+  title: 'Lesson 06 &mdash; Linear Regression from Scratch',
+  render(root) {
+    const XS = [1, 2, 3], YS = [2, 3, 5];
+    const W_STAR = 1.5, B_STAR = 1 / 3, L_STAR = 1 / 18;
+    const ETA_CRIT = 0.18027756377319946;   // 2 / lambda_max, from section 4.3
+
+    const mse = (w, b) =>
+      XS.reduce((s, x, i) => s + (w * x + b - YS[i]) ** 2, 0) / XS.length;
+
+    const grads = (w, b) => {
+      const m = XS.length;
+      const e = XS.map((x, i) => w * x + b - YS[i]);
+      return [
+        (2 / m) * e.reduce((s, ei, i) => s + ei * XS[i], 0),
+        (2 / m) * e.reduce((s, ei) => s + ei, 0),
+      ];
+    };
+
+    const descend = (w, b, lr, steps) => {
+      const path = [[w, b, mse(w, b)]];
+      for (let k = 0; k < steps; k++) {
+        const [gw, gb] = grads(w, b);
+        w -= lr * gw; b -= lr * gb;                // both from the same old values
+        if (!isFinite(w) || !isFinite(b) || Math.abs(w) > 1e6) {
+          path.push([NaN, NaN, NaN]); break;
+        }
+        path.push([w, b, mse(w, b)]);
+      }
+      return path;
+    };
+
+    const el = h(`<div class="demo">
+      <h3>Drive gradient descent yourself</h3>
+      <p class="lede">The real loss surface for the three points in the lesson,
+        computed live. The star is the exact optimum <code>w=1.5, b=0.333</code>.
+        Push the learning rate past <b>0.1803</b> and watch the whole thing
+        detonate &mdash; there is no gentle warning, which is the point.</p>
+      <div class="ctl-row"><label for="lr">learning rate</label>
+        <input type="range" id="lr" min="1" max="250" value="100"><output id="lr-o"></output></div>
+      <div class="ctl-row"><label for="st">steps</label>
+        <input type="range" id="st" min="1" max="80" value="25"><output id="st-o"></output></div>
+      <div class="ctl-row"><label for="w0">start w</label>
+        <input type="range" id="w0" min="-100" max="300" value="0"><output id="w0-o"></output></div>
+      <div class="ctl-row"><label for="b0">start b</label>
+        <input type="range" id="b0" min="-200" max="300" value="0"><output id="b0-o"></output></div>
+      <div class="panels" style="gap:16px">
+        <canvas id="surf" width="380" height="330"></canvas>
+        <canvas id="fit"  width="330" height="330"></canvas>
+      </div>
+      <pre class="out" id="out"></pre>
+    </div>`);
+
+    const surf = el.querySelector('#surf'), fit = el.querySelector('#fit');
+    const sc = surf.getContext('2d'), fc = fit.getContext('2d');
+    const W_LO = -0.5, W_HI = 3.0, B_LO = -2.0, B_HI = 3.0;
+
+    const sx = (w) => ((w - W_LO) / (W_HI - W_LO)) * surf.width;
+    const sy = (b) => surf.height - ((b - B_LO) / (B_HI - B_LO)) * surf.height;
+
+    function css(name) {
+      return getComputedStyle(document.body).getPropertyValue(name).trim();
+    }
+
+    function drawSurface(path) {
+      // loss as a heatmap, log-scaled so the valley floor stays visible
+      const img = sc.createImageData(surf.width, surf.height);
+      for (let py = 0; py < surf.height; py++) {
+        for (let px = 0; px < surf.width; px++) {
+          const w = W_LO + (px / surf.width) * (W_HI - W_LO);
+          const b = B_HI - (py / surf.height) * (B_HI - B_LO);
+          const t = Math.min(1, Math.log10(mse(w, b) / L_STAR + 1) / 3.2);
+          const i = (py * surf.width + px) * 4;
+          img.data[i] = 30 + t * 205;
+          img.data[i + 1] = 60 + t * 140;
+          img.data[i + 2] = 130 + t * 110;
+          img.data[i + 3] = 46;
+        }
+      }
+      sc.putImageData(img, 0, 0);
+
+      // the optimum
+      sc.fillStyle = '#f59e0b';
+      sc.beginPath(); sc.arc(sx(W_STAR), sy(B_STAR), 6, 0, 7); sc.fill();
+      sc.strokeStyle = '#000'; sc.lineWidth = 1; sc.stroke();
+
+      // the descent path
+      sc.strokeStyle = '#ef4444'; sc.lineWidth = 1.6;
+      sc.beginPath();
+      let started = false;
+      for (const [w, b] of path) {
+        if (!isFinite(w)) break;
+        const X = sx(w), Y = sy(b);
+        started ? sc.lineTo(X, Y) : (sc.moveTo(X, Y), started = true);
+      }
+      sc.stroke();
+      for (const [w, b] of path) {
+        if (!isFinite(w)) break;
+        sc.fillStyle = '#ef4444';
+        sc.beginPath(); sc.arc(sx(w), sy(b), 2.4, 0, 7); sc.fill();
+      }
+      // start marker
+      if (isFinite(path[0][0])) {
+        sc.fillStyle = '#16a34a';
+        sc.beginPath(); sc.arc(sx(path[0][0]), sy(path[0][1]), 5, 0, 7); sc.fill();
+      }
+      sc.fillStyle = css('--text-mute'); sc.font = '11px system-ui';
+      sc.fillText('w  (slope) →', 8, surf.height - 8);
+      sc.save(); sc.translate(12, 18); sc.fillText('b  (intercept) →', 0, 0); sc.restore();
+    }
+
+    function drawFit(w, b) {
+      fc.clearRect(0, 0, fit.width, fit.height);
+      const X_LO = 0, X_HI = 4, Y_LO = -1, Y_HI = 7;
+      const fx = (x) => ((x - X_LO) / (X_HI - X_LO)) * fit.width;
+      const fy = (y) => fit.height - ((y - Y_LO) / (Y_HI - Y_LO)) * fit.height;
+
+      fc.strokeStyle = css('--border'); fc.lineWidth = 1;
+      for (let g = 0; g <= 4; g++) {
+        fc.beginPath(); fc.moveTo(fx(g), 0); fc.lineTo(fx(g), fit.height); fc.stroke();
+      }
+
+      if (isFinite(w) && isFinite(b)) {
+        // squared errors, drawn as squares -- the loss IS their mean area
+        XS.forEach((x, i) => {
+          const p = w * x + b, side = Math.abs(fy(YS[i]) - fy(p));
+          fc.fillStyle = 'rgba(239,68,68,0.16)';
+          fc.fillRect(fx(x), Math.min(fy(YS[i]), fy(p)), side, side);
+          fc.strokeStyle = '#ef4444'; fc.setLineDash([3, 3]);
+          fc.beginPath(); fc.moveTo(fx(x), fy(YS[i])); fc.lineTo(fx(x), fy(p)); fc.stroke();
+          fc.setLineDash([]);
+        });
+        fc.strokeStyle = '#4f46e5'; fc.lineWidth = 2.4;
+        fc.beginPath(); fc.moveTo(fx(X_LO), fy(w * X_LO + b));
+        fc.lineTo(fx(X_HI), fy(w * X_HI + b)); fc.stroke();
+      } else {
+        fc.fillStyle = '#ef4444'; fc.font = 'bold 15px system-ui';
+        fc.fillText('diverged — no line to draw', 40, fit.height / 2);
+      }
+
+      fc.fillStyle = '#ef4444';
+      XS.forEach((x, i) => {
+        fc.beginPath(); fc.arc(fx(x), fy(YS[i]), 5.5, 0, 7); fc.fill();
+      });
+      fc.fillStyle = css('--text-mute'); fc.font = '11px system-ui';
+      fc.fillText('the data and the current line', 8, 16);
+    }
+
+    function draw() {
+      const lr = +el.querySelector('#lr').value / 1000;     // 0.001 .. 0.250
+      const steps = +el.querySelector('#st').value;
+      const w0 = +el.querySelector('#w0').value / 100;
+      const b0 = +el.querySelector('#b0').value / 100;
+
+      el.querySelector('#lr-o').textContent = lr.toFixed(3);
+      el.querySelector('#st-o').textContent = steps;
+      el.querySelector('#w0-o').textContent = w0.toFixed(2);
+      el.querySelector('#b0-o').textContent = b0.toFixed(2);
+
+      const path = descend(w0, b0, lr, steps);
+      const last = path[path.length - 1];
+      const blew = !isFinite(last[0]);
+
+      drawSurface(path);
+      drawFit(last[0], last[1]);
+
+      const [gw0, gb0] = grads(w0, b0);
+      let msg =
+        `start      w = ${w0.toFixed(4)}   b = ${b0.toFixed(4)}   loss = ${mse(w0, b0).toFixed(6)}\n` +
+        `gradient   dL/dw = ${gw0.toFixed(4)}   dL/db = ${gb0.toFixed(4)}\n` +
+        `after ${String(steps).padStart(2)}   `;
+
+      if (blew) {
+        msg += `<span class="err">DIVERGED after ${path.length - 1} steps</span>\n\n` +
+          `<span class="err">eta = ${lr.toFixed(3)} exceeds the threshold ${ETA_CRIT.toFixed(4)}.</span>\n` +
+          `Each step overshoots further than the last, so the error grows\n` +
+          `geometrically. In a real network this is the run that prints a\n` +
+          `perfectly normal loss and then, one step later, nan.`;
+      } else {
+        const gap = Math.hypot(last[0] - W_STAR, last[1] - B_STAR);
+        msg += `w = ${last[0].toFixed(6)}   b = ${last[1].toFixed(6)}   loss = ${last[2].toFixed(6)}\n` +
+          `optimum    w = ${W_STAR.toFixed(6)}   b = ${B_STAR.toFixed(6)}   loss = ${L_STAR.toFixed(6)}\n` +
+          `distance to optimum: ${gap.toExponential(2)}   ` +
+          (gap < 1e-3 ? '<span class="ok">converged</span>'
+                      : lr < 0.02 ? 'still crawling &mdash; try a larger eta'
+                                  : 'getting there');
+        if (lr > ETA_CRIT * 0.9 && lr < ETA_CRIT) {
+          msg += `\n\n<span class="err">Note</span> eta = ${lr.toFixed(3)} is within 10% of the ` +
+            `threshold ${ETA_CRIT.toFixed(4)}.\nIt still converges, but look at the zig-zag: ` +
+            `every step overshoots\nthe valley floor and has to come back.`;
+        }
+      }
+      el.querySelector('#out').innerHTML = msg;
+    }
+
+    el.querySelectorAll('input[type=range]').forEach((r) => r.addEventListener('input', draw));
+    root.append(el);
+    draw();
+  },
+});
+
 /* ------------------------------------------------------------------ boot */
 function boot() {
   const host = document.getElementById('demos');

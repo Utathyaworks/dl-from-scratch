@@ -1,6 +1,6 @@
 # Progress
 
-**1 / 45 lessons complete (2%)**
+**2 / 45 lessons complete (4%)**
 
 `[ ]` todo &nbsp;&nbsp; `[~]` in progress &nbsp;&nbsp; `[x]` done
 
@@ -17,11 +17,11 @@ Lessons are done in whatever order makes sense on the day; the
 | `[ ]` | 04 | Gradient Descent in 1D | Roll downhill on a curve and watch the learning rate make or break it. |  |
 | `[ ]` | 05 | Probability, Likelihood and Entropy | Derive why cross-entropy is the loss, not an arbitrary choice. |  |
 
-## Phase 1 - The First Networks (0/10)
+## Phase 1 - The First Networks (1/10)
 
 | | # | Lesson | Goal | Done |
 |---|---|---|---|---|
-| `[ ]` | 06 | Linear Regression from Scratch | Fit a line with gradient descent: the smallest complete neural network. |  |
+| `[x]` | 06 | [Linear Regression from Scratch](notebooks/06-linear-regression.ipynb) | Fit a line with gradient descent: the smallest complete neural network. | 2026-09-25 |
 | `[ ]` | 07 | Loss Surfaces and MSE | See the bowl you are descending and what makes it steep or flat. |  |
 | `[ ]` | 08 | Logistic Regression and the Sigmoid | Turn a line into a probability and derive the sigmoid gradient. |  |
 | `[ ]` | 09 | The Perceptron and its Limits | Build the 1958 neuron and hit the XOR wall that froze the field. |  |
@@ -89,7 +89,7 @@ Lessons are done in whatever order makes sense on the day; the
 
 ## Order completed
 
-01
+01 -> 06
 
 ---
 

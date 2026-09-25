@@ -95,8 +95,8 @@
       "slug": "linear-regression",
       "title": "Linear Regression from Scratch",
       "goal": "Fit a line with gradient descent: the smallest complete neural network.",
-      "status": "todo",
-      "completed": null,
+      "status": "done",
+      "completed": "2026-09-25",
       "notebook": "notebooks/06-linear-regression.ipynb"
     },
     {
