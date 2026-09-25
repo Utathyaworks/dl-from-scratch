@@ -1,0 +1,38 @@
+name: verify notebooks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install tensorflow-cpu
+
+      - name: Rebuild notebooks from lesson sources
+        run: python tools/build_nb.py
+
+      - name: Sources and notebooks must be in sync
+        run: |
+          if ! git diff --quiet -- notebooks/ solutions/; then
+            echo "::error::Notebooks are out of date. Run 'python tools/build_nb.py' and commit."
+            git diff --stat -- notebooks/ solutions/
+            exit 1
+          fi
+
+      - name: Execute every notebook headless
+        run: python tools/verify.py

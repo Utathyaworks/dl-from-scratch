@@ -1,0 +1,277 @@
+{
+  "lessons": {
+    "1": {
+      "status": "done",
+      "started": "2026-09-25",
+      "completed": "2026-09-25",
+      "notes": []
+    },
+    "2": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "3": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "4": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "5": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "6": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "7": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "8": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "9": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "10": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "11": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "12": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "13": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "14": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "15": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "16": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "17": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "18": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "19": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "20": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "21": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "22": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "23": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "24": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "25": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "26": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "27": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "28": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "29": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "30": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "31": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "32": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "33": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "34": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "35": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "36": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "37": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "38": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "39": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "40": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "41": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "42": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "43": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "44": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    },
+    "45": {
+      "status": "todo",
+      "started": null,
+      "completed": null,
+      "notes": []
+    }
+  },
+  "completed_order": [
+    1
+  ]
+}

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deep Learning From Scratch</title>
+<meta name="description" content="45 notebooks that build deep learning from first principles: derivation, worked numbers, visualization, pure Python, NumPy and TensorFlow. Runs on Kaggle.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>🧠</text></svg>">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Deep Learning <span class="thin">From Scratch</span></h1>
+    <p class="tag">
+      45 notebooks that build deep learning from first principles &mdash; every lesson
+      derives the maths, works a tiny example <em>by hand</em>, visualizes it, then
+      implements it three times: pure Python, NumPy, and TensorFlow. If the three
+      disagree, the lesson doesn't ship.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="s-done">0</div><div class="l">done</div></div>
+      <div class="stat"><div class="n" id="s-prog">0</div><div class="l">in progress</div></div>
+      <div class="stat"><div class="n" id="s-left">45</div><div class="l">remaining</div></div>
+      <div class="stat"><div class="n" id="s-pct">0%</div><div class="l">complete</div></div>
+    </div>
+    <div class="bar"><i class="done" id="bar-done" style="width:0"></i><i class="prog" id="bar-prog" style="width:0"></i></div>
+
+    <div class="links">
+      <a class="btn" id="repo-link" href="#">Repository</a>
+      <a class="btn" href="playground.html">Interactive demos</a>
+      <a class="btn" href="#how">How a lesson is built</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="controls">
+    <input type="search" id="q" placeholder="Search lessons&hellip; (backprop, attention, dropout)" aria-label="Search lessons">
+    <button class="chip" data-filter="all" aria-pressed="true">All</button>
+    <button class="chip" data-filter="done" aria-pressed="false">Done</button>
+    <button class="chip" data-filter="in-progress" aria-pressed="false">In progress</button>
+    <button class="chip" data-filter="todo" aria-pressed="false">To do</button>
+  </div>
+
+  <div id="phases"></div>
+  <div class="empty" id="empty" hidden>Nothing matches that.</div>
+
+  <section id="how" style="margin-top:52px">
+    <h2 style="font-size:19px">How every lesson is built</h2>
+    <p style="color:var(--text-dim);max-width:65ch">
+      The same ten sections, in the same order, every single time. The structure is
+      the point: you always know where the derivation is, and you can always check
+      the code against numbers that were computed on paper before any code existed.
+    </p>
+    <div class="grid">
+      <div class="card done"><div class="top"><span class="num">1</span><h3>Plan</h3></div>
+        <p class="goal">What we build, why it exists, and what breaks without it.</p></div>
+      <div class="card done"><div class="top"><span class="num">2</span><h3>From scratch &mdash; the maths</h3></div>
+        <p class="goal">Full derivation. Every partial derivative written out, not cited.</p></div>
+      <div class="card done"><div class="top"><span class="num">3</span><h3>Numerical</h3></div>
+        <p class="goal">Two or three numbers worked by hand, every intermediate shown.</p></div>
+      <div class="card done"><div class="top"><span class="num">4</span><h3>Visualization</h3></div>
+        <p class="goal">Plots of the actual mechanism &mdash; loss surfaces, gradients, filters.</p></div>
+      <div class="card done"><div class="top"><span class="num">5</span><h3>Scratch code</h3></div>
+        <p class="goal">Pure Python, loops and lists, zero imports. Reproduces section 3 exactly.</p></div>
+      <div class="card done"><div class="top"><span class="num">6</span><h3>NumPy</h3></div>
+        <p class="goal">The same maths vectorized, plus a gradient check against the scratch version.</p></div>
+      <div class="card done"><div class="top"><span class="num">7</span><h3>TensorFlow</h3></div>
+        <p class="goal">Idiomatic Keras &mdash; what you would actually ship.</p></div>
+      <div class="card done"><div class="top"><span class="num">8</span><h3>Agreement check</h3></div>
+        <p class="goal">Hand &equiv; scratch &equiv; NumPy &equiv; TensorFlow to 1e&minus;6, asserted. This is the honesty gate.</p></div>
+      <div class="card done"><div class="top"><span class="num">9</span><h3>The silent failure</h3></div>
+        <p class="goal">The bug this topic causes, triggered deliberately so you recognise it later.</p></div>
+      <div class="card done"><div class="top"><span class="num">10</span><h3>Exercises</h3></div>
+        <p class="goal">Self-checking tasks with <code>assert</code>s, and separate solution notebooks.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Built in the open, one lesson at a time. Every notebook is executed headlessly
+     before it is pushed &mdash; if a cell raises, it does not ship.</p>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

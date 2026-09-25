@@ -1,0 +1,493 @@
+{
+  "phases": [
+    {
+      "id": 0,
+      "name": "Math Foundations",
+      "color": "#6366f1"
+    },
+    {
+      "id": 1,
+      "name": "The First Networks",
+      "color": "#0ea5e9"
+    },
+    {
+      "id": 2,
+      "name": "Making Training Work",
+      "color": "#10b981"
+    },
+    {
+      "id": 3,
+      "name": "Convolutional Nets",
+      "color": "#f59e0b"
+    },
+    {
+      "id": 4,
+      "name": "Sequences",
+      "color": "#ef4444"
+    },
+    {
+      "id": 5,
+      "name": "Transformers",
+      "color": "#a855f7"
+    },
+    {
+      "id": 6,
+      "name": "Generative Models",
+      "color": "#ec4899"
+    }
+  ],
+  "github_user": "Utathyaworks",
+  "repo": "dl-from-scratch",
+  "lessons": [
+    {
+      "id": 1,
+      "phase": 0,
+      "slug": "tensors-and-vectors",
+      "title": "Tensors, Vectors and Shapes",
+      "goal": "Represent data as numbers a network can eat, and never be confused by a shape again.",
+      "status": "done",
+      "completed": "2026-09-25",
+      "notebook": "notebooks/01-tensors-and-vectors.ipynb"
+    },
+    {
+      "id": 2,
+      "phase": 0,
+      "slug": "matrix-multiplication",
+      "title": "Matrix Multiplication by Hand",
+      "goal": "Compute a matmul manually and see why it is THE operation of deep learning.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/02-matrix-multiplication.ipynb"
+    },
+    {
+      "id": 3,
+      "phase": 0,
+      "slug": "derivatives-chain-rule",
+      "title": "Derivatives and the Chain Rule",
+      "goal": "Differentiate composed functions by hand: the engine of backprop.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/03-derivatives-chain-rule.ipynb"
+    },
+    {
+      "id": 4,
+      "phase": 0,
+      "slug": "gradient-descent-1d",
+      "title": "Gradient Descent in 1D",
+      "goal": "Roll downhill on a curve and watch the learning rate make or break it.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/04-gradient-descent-1d.ipynb"
+    },
+    {
+      "id": 5,
+      "phase": 0,
+      "slug": "probability-entropy",
+      "title": "Probability, Likelihood and Entropy",
+      "goal": "Derive why cross-entropy is the loss, not an arbitrary choice.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/05-probability-entropy.ipynb"
+    },
+    {
+      "id": 6,
+      "phase": 1,
+      "slug": "linear-regression",
+      "title": "Linear Regression from Scratch",
+      "goal": "Fit a line with gradient descent: the smallest complete neural network.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/06-linear-regression.ipynb"
+    },
+    {
+      "id": 7,
+      "phase": 1,
+      "slug": "loss-surfaces",
+      "title": "Loss Surfaces and MSE",
+      "goal": "See the bowl you are descending and what makes it steep or flat.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/07-loss-surfaces.ipynb"
+    },
+    {
+      "id": 8,
+      "phase": 1,
+      "slug": "logistic-regression",
+      "title": "Logistic Regression and the Sigmoid",
+      "goal": "Turn a line into a probability and derive the sigmoid gradient.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/08-logistic-regression.ipynb"
+    },
+    {
+      "id": 9,
+      "phase": 1,
+      "slug": "the-perceptron",
+      "title": "The Perceptron and its Limits",
+      "goal": "Build the 1958 neuron and hit the XOR wall that froze the field.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/09-the-perceptron.ipynb"
+    },
+    {
+      "id": 10,
+      "phase": 1,
+      "slug": "mlp-forward-pass",
+      "title": "The MLP Forward Pass",
+      "goal": "Stack layers to break the XOR wall; trace one input to one output.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/10-mlp-forward-pass.ipynb"
+    },
+    {
+      "id": 11,
+      "phase": 1,
+      "slug": "backpropagation",
+      "title": "Backpropagation, Derived in Full",
+      "goal": "Derive every partial derivative of a two-layer net and verify numerically.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/11-backpropagation.ipynb"
+    },
+    {
+      "id": 12,
+      "phase": 1,
+      "slug": "activation-functions",
+      "title": "Activations: Sigmoid, Tanh, ReLU, GELU",
+      "goal": "Compare gradients, saturation and dead units across activations.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/12-activation-functions.ipynb"
+    },
+    {
+      "id": 13,
+      "phase": 1,
+      "slug": "softmax-cross-entropy",
+      "title": "Softmax and Cross-Entropy",
+      "goal": "Multi-class outputs and the famous (p - y) gradient simplification.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/13-softmax-cross-entropy.ipynb"
+    },
+    {
+      "id": 14,
+      "phase": 1,
+      "slug": "weight-initialization",
+      "title": "Weight Initialization: Xavier and He",
+      "goal": "Derive the variance rules that stop signals exploding or dying.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/14-weight-initialization.ipynb"
+    },
+    {
+      "id": 15,
+      "phase": 1,
+      "slug": "optimizers",
+      "title": "Optimizers: SGD, Momentum, RMSProp, Adam",
+      "goal": "Build each update rule from scratch and race them on one surface.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/15-optimizers.ipynb"
+    },
+    {
+      "id": 16,
+      "phase": 2,
+      "slug": "bias-variance-overfitting",
+      "title": "Bias, Variance and Overfitting",
+      "goal": "Watch a model memorize noise and learn to read training curves.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/16-bias-variance-overfitting.ipynb"
+    },
+    {
+      "id": 17,
+      "phase": 2,
+      "slug": "regularization-l1-l2",
+      "title": "L1 and L2 Regularization",
+      "goal": "Add a penalty term, derive its gradient, see the weights shrink.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/17-regularization-l1-l2.ipynb"
+    },
+    {
+      "id": 18,
+      "phase": 2,
+      "slug": "dropout",
+      "title": "Dropout",
+      "goal": "Train an ensemble for free and get the train/test scaling right.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/18-dropout.ipynb"
+    },
+    {
+      "id": 19,
+      "phase": 2,
+      "slug": "batch-layer-norm",
+      "title": "Batch Norm and Layer Norm",
+      "goal": "Normalize activations and backprop through the statistics.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/19-batch-layer-norm.ipynb"
+    },
+    {
+      "id": 20,
+      "phase": 2,
+      "slug": "lr-schedules",
+      "title": "Learning Rate Schedules and Warmup",
+      "goal": "Step, cosine and warmup schedules, and when each one wins.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/20-lr-schedules.ipynb"
+    },
+    {
+      "id": 21,
+      "phase": 2,
+      "slug": "data-pipelines",
+      "title": "Batching, Shuffling and Data Pipelines",
+      "goal": "Mini-batch gradient descent and why batch size changes the path.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/21-data-pipelines.ipynb"
+    },
+    {
+      "id": 22,
+      "phase": 3,
+      "slug": "convolution-by-hand",
+      "title": "Convolution by Hand",
+      "goal": "Slide a kernel over a grid manually and see what each filter detects.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/22-convolution-by-hand.ipynb"
+    },
+    {
+      "id": 23,
+      "phase": 3,
+      "slug": "stride-padding-pooling",
+      "title": "Stride, Padding and Pooling",
+      "goal": "Control output shapes exactly and derive the size formula.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/23-stride-padding-pooling.ipynb"
+    },
+    {
+      "id": 24,
+      "phase": 3,
+      "slug": "conv-backprop",
+      "title": "Backprop Through a Convolution",
+      "goal": "Derive the gradient of a convolution: it is another convolution.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/24-conv-backprop.ipynb"
+    },
+    {
+      "id": 25,
+      "phase": 3,
+      "slug": "lenet-mnist",
+      "title": "LeNet on MNIST",
+      "goal": "Assemble a real CNN and train it to recognise handwritten digits.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/25-lenet-mnist.ipynb"
+    },
+    {
+      "id": 26,
+      "phase": 3,
+      "slug": "receptive-fields",
+      "title": "Receptive Fields and Depth",
+      "goal": "Compute what each deep neuron actually sees in the input image.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/26-receptive-fields.ipynb"
+    },
+    {
+      "id": 27,
+      "phase": 3,
+      "slug": "data-augmentation",
+      "title": "Data Augmentation",
+      "goal": "Manufacture training data and measure the accuracy it buys.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/27-data-augmentation.ipynb"
+    },
+    {
+      "id": 28,
+      "phase": 3,
+      "slug": "transfer-learning",
+      "title": "Transfer Learning and Filter Visualization",
+      "goal": "Reuse pretrained features and look at what the filters learned.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/28-transfer-learning.ipynb"
+    },
+    {
+      "id": 29,
+      "phase": 4,
+      "slug": "embeddings",
+      "title": "Embeddings: Words as Vectors",
+      "goal": "Learn a lookup table where geometry encodes meaning.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/29-embeddings.ipynb"
+    },
+    {
+      "id": 30,
+      "phase": 4,
+      "slug": "vanilla-rnn",
+      "title": "The Vanilla RNN",
+      "goal": "Add a hidden-state loop and process a sequence step by step.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/30-vanilla-rnn.ipynb"
+    },
+    {
+      "id": 31,
+      "phase": 4,
+      "slug": "bptt",
+      "title": "Backpropagation Through Time",
+      "goal": "Unroll the loop and sum gradients across every timestep.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/31-bptt.ipynb"
+    },
+    {
+      "id": 32,
+      "phase": 4,
+      "slug": "vanishing-gradients",
+      "title": "Vanishing and Exploding Gradients",
+      "goal": "Multiply Jacobians repeatedly and watch the learning signal die.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/32-vanishing-gradients.ipynb"
+    },
+    {
+      "id": 33,
+      "phase": 4,
+      "slug": "lstm-gru",
+      "title": "LSTM and GRU Cell Math",
+      "goal": "Build every gate by hand and see how the cell state survives.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/33-lstm-gru.ipynb"
+    },
+    {
+      "id": 34,
+      "phase": 4,
+      "slug": "seq2seq-attention",
+      "title": "Seq2Seq and the First Attention",
+      "goal": "Encoder-decoder, the bottleneck problem, and attention as the fix.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/34-seq2seq-attention.ipynb"
+    },
+    {
+      "id": 35,
+      "phase": 5,
+      "slug": "scaled-dot-attention",
+      "title": "Scaled Dot-Product Attention",
+      "goal": "Derive Q, K, V from scratch and justify the sqrt(d) scaling.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/35-scaled-dot-attention.ipynb"
+    },
+    {
+      "id": 36,
+      "phase": 5,
+      "slug": "multi-head-attention",
+      "title": "Multi-Head Attention",
+      "goal": "Run several attention subspaces in parallel and concatenate them.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/36-multi-head-attention.ipynb"
+    },
+    {
+      "id": 37,
+      "phase": 5,
+      "slug": "positional-encoding",
+      "title": "Positional Encoding",
+      "goal": "Inject order into a model that is otherwise permutation invariant.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/37-positional-encoding.ipynb"
+    },
+    {
+      "id": 38,
+      "phase": 5,
+      "slug": "transformer-block",
+      "title": "The Full Transformer Block",
+      "goal": "Residuals, layer norm and the feed-forward network, assembled.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/38-transformer-block.ipynb"
+    },
+    {
+      "id": 39,
+      "phase": 5,
+      "slug": "tokenization",
+      "title": "Tokenization and Byte-Pair Encoding",
+      "goal": "Turn raw text into integers and implement BPE from scratch.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/39-tokenization.ipynb"
+    },
+    {
+      "id": 40,
+      "phase": 5,
+      "slug": "mini-gpt",
+      "title": "Mini-GPT from Scratch",
+      "goal": "Causal masking and a decoder-only stack, built end to end.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/40-mini-gpt.ipynb"
+    },
+    {
+      "id": 41,
+      "phase": 5,
+      "slug": "train-tiny-lm",
+      "title": "Training a Tiny Language Model",
+      "goal": "Train the mini-GPT on real text and generate samples from it.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/41-train-tiny-lm.ipynb"
+    },
+    {
+      "id": 42,
+      "phase": 6,
+      "slug": "autoencoder",
+      "title": "Autoencoders",
+      "goal": "Compress to a bottleneck and reconstruct; learn representations.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/42-autoencoder.ipynb"
+    },
+    {
+      "id": 43,
+      "phase": 6,
+      "slug": "vae",
+      "title": "Variational Autoencoders",
+      "goal": "Derive the ELBO and the KL term; use the reparameterization trick.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/43-vae.ipynb"
+    },
+    {
+      "id": 44,
+      "phase": 6,
+      "slug": "gan",
+      "title": "Generative Adversarial Networks",
+      "goal": "Two networks in a minimax game, trained against each other.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/44-gan.ipynb"
+    },
+    {
+      "id": 45,
+      "phase": 6,
+      "slug": "diffusion",
+      "title": "Diffusion Models",
+      "goal": "Add noise, learn to remove it: the idea behind modern image models.",
+      "status": "todo",
+      "completed": null,
+      "notebook": "notebooks/45-diffusion.ipynb"
+    }
+  ]
+}

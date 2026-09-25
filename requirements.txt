@@ -1,0 +1,16 @@
+# Core -- needed to author and verify lessons
+numpy>=1.24
+matplotlib>=3.7
+nbformat>=5.9
+nbclient>=0.9
+ipykernel>=6.25
+
+# Optional. Section 7 of every notebook skips itself when TF is absent,
+# and Kaggle has it preinstalled. Install locally only if you want the
+# TensorFlow assertions checked on your own machine:
+#   pip install tensorflow-cpu
+# tensorflow-cpu>=2.15
+
+# Optional -- enables the slider widgets in some visualizations.
+# Kaggle has it; the notebooks degrade to static plots without it.
+# ipywidgets>=8.1
