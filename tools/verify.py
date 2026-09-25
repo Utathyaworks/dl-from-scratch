@@ -37,9 +37,13 @@ def verify(path, timeout=600):
         resources={"metadata": {"path": str(ROOT)}},
     )
     # Let the intentionally-unanswered exercises raise without failing the run.
+    # build_nb.py normally sets this tag already; add it only if it is missing,
+    # or the executed notebook gets written back with a duplicated tag and
+    # drifts out of sync with its source.
     for cell in nb.cells:
-        if "exercise" in cell.get("metadata", {}).get("tags", []):
-            cell.metadata.setdefault("tags", []).append("raises-exception")
+        tags = cell.get("metadata", {}).get("tags", [])
+        if "exercise" in tags and "raises-exception" not in tags:
+            cell.metadata["tags"] = tags + ["raises-exception"]
 
     t0 = time.perf_counter()
     try:

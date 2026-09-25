@@ -16,6 +16,12 @@ unreadable JSON noise, and this repo gets pushed every day.
 
     python tools/build_nb.py          # build every lesson
     python tools/build_nb.py 4        # build just lesson 4
+    python tools/build_nb.py --check  # verify .ipynb match their .py sources
+
+`--check` compares CELL SOURCES ONLY, never outputs. Committed notebooks
+carry their executed outputs (so GitHub renders the plots), and those
+outputs include timings that can never be reproduced byte-for-byte -- so
+comparing whole files would fail every time.
 
 The .ipynb files are committed too, because Kaggle and GitHub's preview
 need them. The .py file is the source of truth: never hand-edit the .ipynb.
@@ -112,7 +118,65 @@ def sources(which=None):
     return hits
 
 
+def cell_signature(nb):
+    """What must match between a source and its notebook: cell kinds + text + tags."""
+    return [
+        (c.cell_type, c.source, tuple(sorted(c.get("metadata", {}).get("tags", []))))
+        for c in nb.cells
+    ]
+
+
+def check(src_path):
+    """True if the committed notebook still matches its source."""
+    out_dir = SOLUTIONS if src_path.stem.endswith("-solutions") else NOTEBOOKS
+    out = out_dir / (src_path.stem + ".ipynb")
+    rel = out.relative_to(ROOT)
+
+    if not out.exists():
+        print(f"  MISSING  {rel} -- run build_nb.py")
+        return False
+
+    fresh = nbformat.v4.new_notebook()
+    fresh.cells = []
+    for kind, text in parse_source(src_path.read_text(encoding="utf-8")):
+        if kind == "markdown":
+            fresh.cells.append(nbformat.v4.new_markdown_cell(text))
+        else:
+            cell = nbformat.v4.new_code_cell(text)
+            if kind == "exercise":
+                cell.metadata["tags"] = ["exercise", "raises-exception"]
+            fresh.cells.append(cell)
+
+    committed = nbformat.read(str(out), as_version=4)
+    if cell_signature(fresh) == cell_signature(committed):
+        print(f"  in sync  {rel}")
+        return True
+
+    print(f"  STALE    {rel} -- source has changed since it was built")
+    a, b = cell_signature(fresh), cell_signature(committed)
+    if len(a) != len(b):
+        print(f"           cell count {len(b)} committed vs {len(a)} from source")
+    else:
+        for i, (x, y) in enumerate(zip(a, b)):
+            if x != y:
+                print(f"           first difference at cell {i} ({y[0]})")
+                break
+    return False
+
+
 def main(argv):
+    if argv and argv[0] == "--check":
+        srcs = sources()
+        if not srcs:
+            print("  no lesson sources yet")
+            return 0
+        results = [check(s) for s in srcs]
+        if all(results):
+            print(f"\n{len(results)}/{len(results)} notebooks match their sources")
+            return 0
+        print("\nRun 'python tools/build_nb.py' and commit the result.")
+        return 1
+
     targets = sources(argv[0] if argv else None)
     if not targets:
         print("  no lesson sources yet -- run tools/new_lesson.py <id> first")
