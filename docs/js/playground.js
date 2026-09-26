@@ -385,6 +385,279 @@ DEMOS.push({
   },
 });
 
+/* ============================================================ LESSON 11 ===
+   Live backpropagation through the 2-2-1 network from the lesson. Every
+   number is computed here in JS from the same formulas the notebook derives;
+   the defaults reproduce the hand-worked numbers in section 3 exactly. */
+
+DEMOS.push({
+  id: 11,
+  title: 'Lesson 11 &mdash; Backpropagation, Derived in Full',
+  render(root) {
+
+    /* ---------------------------------------------------- the network */
+    const DEFAULTS = {
+      w100: 0.5, w101: -1.0, w110: -0.5, w111: 0.5,
+      b10: 0.0, b11: 1.0, w20: 1.0, w21: 2.0, b2: -0.5,
+      x0: 1.0, x1: 2.0, y: 1,
+    };
+    let p = { ...DEFAULTS };
+
+    const tanh = Math.tanh;
+    const sig = (z) => (z >= 0 ? 1 / (1 + Math.exp(-z)) : Math.exp(z) / (1 + Math.exp(z)));
+
+    /** Forward and backward, exactly as derived in sections 2.3 and 2.4. */
+    function compute(q) {
+      const x = [q.x0, q.x1];
+      const W1 = [[q.w100, q.w101], [q.w110, q.w111]];
+      const b1 = [q.b10, q.b11];
+      const W2 = [q.w20, q.w21];
+
+      // forward
+      const z1 = [0, 1].map((j) => x[0] * W1[0][j] + x[1] * W1[1][j] + b1[j]);
+      const h = z1.map(tanh);
+      const z2 = h[0] * W2[0] + h[1] * W2[1] + q.b2;
+      const yhat = sig(z2);
+      const yc = Math.min(Math.max(yhat, 1e-15), 1 - 1e-15);
+      const loss = -(q.y * Math.log(yc) + (1 - q.y) * Math.log(1 - yc));
+
+      // backward
+      const delta2 = yhat - q.y;                       // the L08 cancellation
+      const dW2 = h.map((hj) => delta2 * hj);          // delta x activation
+      const db2 = delta2;
+      const tp = h.map((hj) => 1 - hj * hj);           // tanh' = 1 - h^2
+      const delta1 = [0, 1].map((j) => delta2 * W2[j] * tp[j]);
+      const dW1 = [[delta1[0] * x[0], delta1[1] * x[0]],
+                   [delta1[0] * x[1], delta1[1] * x[1]]];
+      const db1 = delta1.slice();
+
+      return { x, z1, h, z2, yhat, loss, delta2, dW2, db2, tp, delta1, dW1, db1 };
+    }
+
+    /** Numerical gradient of the loss w.r.t. one parameter -- the honesty check. */
+    function numericGrad(key, eps = 1e-5) {
+      const hi = { ...p, [key]: p[key] + eps };
+      const lo = { ...p, [key]: p[key] - eps };
+      return (compute(hi).loss - compute(lo).loss) / (2 * eps);
+    }
+
+    const GRAD_OF = {
+      w100: (s) => s.dW1[0][0], w101: (s) => s.dW1[0][1],
+      w110: (s) => s.dW1[1][0], w111: (s) => s.dW1[1][1],
+      b10: (s) => s.db1[0], b11: (s) => s.db1[1],
+      w20: (s) => s.dW2[0], w21: (s) => s.dW2[1], b2: (s) => s.db2,
+    };
+    const LABEL = {
+      w100: 'W1[0][0]', w101: 'W1[0][1]', w110: 'W1[1][0]', w111: 'W1[1][1]',
+      b10: 'b1[0]', b11: 'b1[1]', w20: 'W2[0]', w21: 'W2[1]', b2: 'b2',
+    };
+
+    /* ---------------------------------------------------- the markup */
+    const slider = (key, label, min, max) => `
+      <div class="ctl-row" style="margin:3px 0">
+        <label for="${key}" style="min-width:74px;font-family:var(--mono);font-size:12px">${label}</label>
+        <input type="range" id="${key}" min="${min * 100}" max="${max * 100}"
+               step="5" value="${DEFAULTS[key] * 100}">
+        <output id="${key}-o" style="min-width:52px"></output>
+      </div>`;
+
+    const el = h(`<div class="demo">
+      <h3>Watch the gradient flow backwards</h3>
+      <p class="lede">The exact 2&ndash;2&ndash;1 network from the lesson. Blue numbers
+        flow forward, red numbers flow back. Every gradient is computed live from
+        the formulas in section 2 &mdash; and checked against a numerical
+        derivative, so you can see for yourself that the derivation is right.
+        The defaults reproduce the hand-worked numbers in section 3.</p>
+
+      <div class="panels" style="gap:26px;align-items:flex-start">
+        <div style="flex:1 1 320px;min-width:290px">
+          <div style="font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:4px">input and target</div>
+          ${slider('x0', 'x₁', -3, 3)}
+          ${slider('x1', 'x₂', -3, 3)}
+          <div class="ctl-row" style="margin:3px 0">
+            <label style="min-width:74px;font-family:var(--mono);font-size:12px">y</label>
+            <button class="chip" id="y-toggle" style="flex:0 0 auto">target = 1</button>
+          </div>
+
+          <div style="font-size:12px;font-weight:600;color:var(--text-dim);margin:12px 0 4px">hidden layer</div>
+          ${slider('w100', 'W1[0][0]', -3, 3)}
+          ${slider('w101', 'W1[0][1]', -3, 3)}
+          ${slider('w110', 'W1[1][0]', -3, 3)}
+          ${slider('w111', 'W1[1][1]', -3, 3)}
+          ${slider('b10', 'b1[0]', -3, 3)}
+          ${slider('b11', 'b1[1]', -3, 3)}
+
+          <div style="font-size:12px;font-weight:600;color:var(--text-dim);margin:12px 0 4px">output layer</div>
+          ${slider('w20', 'W2[0]', -3, 3)}
+          ${slider('w21', 'W2[1]', -3, 3)}
+          ${slider('b2', 'b2', -3, 3)}
+
+          <div class="ctl-row" style="margin-top:14px;gap:6px">
+            <button class="btn primary" id="step">Take one step</button>
+            <button class="btn" id="run">Train 200</button>
+            <button class="btn" id="reset">Reset</button>
+          </div>
+          <div class="ctl-row" style="margin:3px 0">
+            <label for="lr" style="min-width:74px;font-size:12px">learning rate</label>
+            <input type="range" id="lr" min="1" max="300" value="100">
+            <output id="lr-o" style="min-width:52px"></output>
+          </div>
+        </div>
+
+        <div style="flex:1 1 380px;min-width:330px">
+          <svg id="net" viewBox="0 0 430 250" style="width:100%;height:auto"></svg>
+        </div>
+      </div>
+
+      <pre class="out" id="chain"></pre>
+      <pre class="out" id="grads"></pre>
+    </div>`);
+
+    /* ---------------------------------------------------- the diagram */
+    const NODES = {
+      x0: [40, 55], x1: [40, 160], h0: [190, 55], h1: [190, 160], out: [345, 107],
+    };
+
+    function drawNet(s) {
+      const edge = (a, b, w, label, gradLabel) => {
+        const [x1_, y1_] = NODES[a], [x2_, y2_] = NODES[b];
+        const mx = x1_ + (x2_ - x1_) * 0.5, my = y1_ + (y2_ - y1_) * 0.5;
+        const width = Math.min(6, 0.6 + Math.abs(w) * 1.5);
+        return `<line x1="${x1_}" y1="${y1_}" x2="${x2_}" y2="${y2_}"
+                  stroke="${w >= 0 ? '#60a5fa' : '#fca5a5'}" stroke-width="${width}"
+                  opacity="0.85"/>
+                <text x="${mx}" y="${my - 5}" text-anchor="middle" font-size="10"
+                  font-family="ui-monospace,monospace" fill="currentColor">${label}</text>
+                <text x="${mx}" y="${my + 9}" text-anchor="middle" font-size="9"
+                  font-family="ui-monospace,monospace" fill="#ef4444">${gradLabel}</text>`;
+      };
+
+      const node = (k, main, sub, colour) => {
+        const [cx, cy] = NODES[k];
+        return `<circle cx="${cx}" cy="${cy}" r="24" fill="${colour}" opacity="0.9"/>
+                <text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="11"
+                  font-weight="700" fill="#fff" font-family="ui-monospace,monospace">${main}</text>
+                <text x="${cx}" y="${cy + 39}" text-anchor="middle" font-size="9.5"
+                  fill="#ef4444" font-family="ui-monospace,monospace">${sub}</text>`;
+      };
+
+      const f = (v, n = 3) => v.toFixed(n);
+      el.querySelector('#net').innerHTML =
+        edge('x0', 'h0', p.w100, f(p.w100, 2), f(s.dW1[0][0])) +
+        edge('x0', 'h1', p.w101, f(p.w101, 2), f(s.dW1[0][1])) +
+        edge('x1', 'h0', p.w110, f(p.w110, 2), f(s.dW1[1][0])) +
+        edge('x1', 'h1', p.w111, f(p.w111, 2), f(s.dW1[1][1])) +
+        edge('h0', 'out', p.w20, f(p.w20, 2), f(s.dW2[0])) +
+        edge('h1', 'out', p.w21, f(p.w21, 2), f(s.dW2[1])) +
+        node('x0', f(p.x0, 1), '', '#0ea5e9') +
+        node('x1', f(p.x1, 1), '', '#0ea5e9') +
+        node('h0', f(s.h[0]), 'δ₁=' + f(s.delta1[0]), '#16a34a') +
+        node('h1', f(s.h[1]), 'δ₁=' + f(s.delta1[1]), '#16a34a') +
+        node('out', f(s.yhat), 'δ₂=' + f(s.delta2), '#a855f7') +
+        `<text x="40" y="20" text-anchor="middle" font-size="10" fill="currentColor">input</text>
+         <text x="190" y="20" text-anchor="middle" font-size="10" fill="currentColor">tanh</text>
+         <text x="345" y="20" text-anchor="middle" font-size="10" fill="currentColor">sigmoid</text>
+         <text x="345" y="200" text-anchor="middle" font-size="10" fill="currentColor">y = ${p.y}</text>
+         <text x="60" y="243" font-size="9.5" fill="#60a5fa">blue = weight</text>
+         <text x="200" y="243" font-size="9.5" fill="#ef4444">red = gradient</text>`;
+    }
+
+    /* ---------------------------------------------------- the readouts */
+    function render() {
+      const s = compute(p);
+
+      for (const k of Object.keys(DEFAULTS)) {
+        if (k === 'y') continue;
+        const inp = el.querySelector('#' + k);
+        if (inp) {
+          inp.value = p[k] * 100;
+          el.querySelector('#' + k + '-o').textContent = p[k].toFixed(2);
+        }
+      }
+      const lr = +el.querySelector('#lr').value / 100;
+      el.querySelector('#lr-o').textContent = lr.toFixed(2);
+      el.querySelector('#y-toggle').textContent = `target = ${p.y}`;
+
+      drawNet(s);
+
+      const f = (v, n = 7) => (v >= 0 ? ' ' : '') + v.toFixed(n);
+      el.querySelector('#chain').innerHTML =
+`<b>FORWARD</b>
+  z1 = [${f(s.z1[0])}, ${f(s.z1[1])}]        h = tanh(z1) = [${f(s.h[0])}, ${f(s.h[1])}]
+  z2 = ${f(s.z2)}                 yhat = sigma(z2) = ${f(s.yhat)}
+  loss = ${f(s.loss)}   ${s.loss < Math.LN2 ? '<span class="ok">better than log 2</span>' : '<span class="err">worse than knowing nothing (log 2 = 0.693147)</span>'}
+
+<b>BACKWARD</b>  &mdash; section 2.4, one hop at a time
+  delta2 = yhat - y                      = ${f(s.delta2)}
+  tanh'  = 1 - h^2                       = [${f(s.tp[0])}, ${f(s.tp[1])}]
+
+  unit 1:  delta2 x W2[0] x tanh'[0]
+           ${f(s.delta2)} x ${f(p.w20, 2)} x ${f(s.tp[0])} = ${f(s.delta1[0])}
+  unit 2:  delta2 x W2[1] x tanh'[1]
+           ${f(s.delta2)} x ${f(p.w21, 2)} x ${f(s.tp[1])} = ${f(s.delta1[1])}`;
+
+      let rows = '';
+      let worst = 0;
+      for (const k of Object.keys(GRAD_OF)) {
+        const a = GRAD_OF[k](s), n = numericGrad(k);
+        const rel = Math.abs(a - n) / Math.max(1e-300, Math.abs(a) + Math.abs(n));
+        const ok = rel < 1e-5 || Math.abs(a - n) < 1e-8;
+        if (!ok) worst = Math.max(worst, rel);
+        rows += `  ${LABEL[k].padEnd(9)} ${f(a).padStart(13)} ${f(n).padStart(15)}` +
+                `   ${ok ? '<span class="ok">ok</span>' : '<span class="err">FAIL</span>'}\n`;
+      }
+
+      // the structural check from section 3.5
+      const ratio = p.x0 !== 0 ? (p.x1 / p.x0) : NaN;
+      const shown = Number.isFinite(ratio)
+        ? `  dW1 row 2 / row 1 = ${ratio.toFixed(4)} = x2/x1, because dW1[i][j] = delta1[j] * x[i]`
+        : '  (x1 = 0, so row 1 of dW1 is all zeros -- a zero input learns no weight)';
+
+      el.querySelector('#grads').innerHTML =
+`<b>ALL NINE GRADIENTS</b>, each checked against a numerical derivative
+  ${'parameter'.padEnd(9)} ${'backprop'.padStart(13)} ${'numerical'.padStart(15)}
+  ${'-'.repeat(52)}
+${rows}${worst === 0 ? '  <span class="ok">every gradient confirmed</span>' : '  <span class="err">mismatch ' + worst.toExponential(2) + '</span>'}
+
+${shown}`;
+    }
+
+    /* ---------------------------------------------------- interaction */
+    function gdStep(lr) {
+      const s = compute(p);
+      for (const k of Object.keys(GRAD_OF)) p[k] -= lr * GRAD_OF[k](s);
+    }
+
+    el.querySelectorAll('input[type=range]').forEach((r) => {
+      r.addEventListener('input', () => {
+        if (r.id !== 'lr') p[r.id] = +r.value / 100;
+        render();
+      });
+    });
+    el.querySelector('#y-toggle').addEventListener('click', () => {
+      p.y = p.y === 1 ? 0 : 1;
+      render();
+    });
+    el.querySelector('#step').addEventListener('click', () => {
+      gdStep(+el.querySelector('#lr').value / 100);
+      render();
+    });
+    el.querySelector('#run').addEventListener('click', () => {
+      const lr = +el.querySelector('#lr').value / 100;
+      for (let i = 0; i < 200; i++) gdStep(lr);
+      render();
+    });
+    el.querySelector('#reset').addEventListener('click', () => {
+      p = { ...DEFAULTS };
+      el.querySelector('#lr').value = 100;
+      render();
+    });
+
+    root.append(el);
+    render();
+  },
+});
+
 /* ------------------------------------------------------------------ boot */
 function boot() {
   const host = document.getElementById('demos');
